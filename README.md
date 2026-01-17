@@ -96,6 +96,47 @@ The database includes realistic telco analytics data:
 3. **describe_table** - Get table schema information
 4. **get_customer_summary** - View customer analytics
 
+## 🧪 Testing with MCP Clients
+
+### Using VS Code with Claude Desktop or Other MCP Clients
+
+The project includes an `mcp.json` configuration file that can be used to test the MCP server with VS Code or other MCP clients.
+
+1. **Start PostgreSQL** (if not already running):
+   ```bash
+   docker compose up -d
+   ```
+
+2. **Configure your MCP client** by adding the server configuration:
+   ```json
+   {
+     "mcpServers": {
+       "data-analytics": {
+         "command": "python",
+         "args": ["src/server.py"],
+         "env": {
+           "POSTGRES_HOST": "localhost",
+           "POSTGRES_PORT": "5432",
+           "POSTGRES_DB": "analytics_db",
+           "POSTGRES_USER": "analytics_user",
+           "POSTGRES_PASSWORD": "analytics_password"
+         }
+       }
+     }
+   }
+   ```
+
+3. **For Claude Desktop**: Copy the configuration above to your Claude Desktop MCP settings file:
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+4. **Test the connection**: Ask Claude to:
+   - "List all tables in the database"
+   - "Show me the first 5 customers"
+   - "What's the total revenue by account type?"
+
+The included `mcp.json` file in the project root contains a ready-to-use configuration.
+
 ## 📖 Documentation
 
 - [SETUP.md](SETUP.md) - Detailed setup and usage guide

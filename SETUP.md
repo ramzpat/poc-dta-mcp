@@ -177,6 +177,67 @@ Get a summary of all customers with their activity and revenue.
 }
 ```
 
+## Testing with MCP Clients
+
+### Using Claude Desktop or Other MCP Clients
+
+The project includes an `mcp.json` configuration file for easy testing with MCP clients.
+
+#### Quick Setup for Claude Desktop
+
+1. **Ensure PostgreSQL is running**:
+   ```bash
+   docker compose up -d
+   ```
+
+2. **Add the MCP server to Claude Desktop**:
+
+   Open your Claude Desktop configuration file and add:
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+   ```json
+   {
+     "mcpServers": {
+       "data-analytics": {
+         "command": "python",
+         "args": ["src/server.py"],
+         "env": {
+           "POSTGRES_HOST": "localhost",
+           "POSTGRES_PORT": "5432",
+           "POSTGRES_DB": "analytics_db",
+           "POSTGRES_USER": "analytics_user",
+           "POSTGRES_PASSWORD": "analytics_password"
+         }
+       }
+     }
+   }
+   ```
+
+   **Note**: Adjust the `args` path if your project is in a different location. Use the full path to `server.py` if needed.
+
+3. **Restart Claude Desktop** to load the new configuration.
+
+4. **Test the MCP server** by asking Claude:
+   - "List all tables in the database"
+   - "Show me the first 5 customers"
+   - "What's the total revenue by account type?"
+   - "Describe the structure of the customers table"
+
+#### Using the Included mcp.json
+
+The `mcp.json` file in the project root contains the ready-to-use configuration above. You can copy its contents directly into your MCP client's configuration.
+
+#### Testing with Other MCP Clients
+
+For other MCP clients that support the MCP protocol:
+
+1. Configure the client to run: `python src/server.py`
+2. Set the environment variables as shown above
+3. Ensure the working directory is the project root
+
+The MCP server communicates via stdio and will automatically connect to PostgreSQL when started.
+
 ## Database Schema
 
 ### Customers Table

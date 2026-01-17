@@ -170,9 +170,9 @@ FROM mcr.microsoft.com/devcontainers/python:3.12-bullseye
   - `service`: `dev` - The Docker Compose service to use
 - `Dockerfile` - Custom development container image (Python 3.11 + dependencies)
 - `docker-compose.extend.yml` - Docker Compose extension for dev service
-  - **Build context**: `..` (parent directory) to access `pyproject.toml`
+  - **Build context**: `.` (project root when run by VS Code)
   - **Dockerfile path**: `.devcontainer/Dockerfile` (relative to project root)
-  - **Volume mount**: `..:/workspace:cached` - Mounts project root to `/workspace`
+  - **Volume mount**: `.:/workspace:cached` - Mounts project root to `/workspace`
   - **Working directory**: `/workspace` - Where commands run in the container
 - `README.md` - This file
 
@@ -183,26 +183,28 @@ Host Machine:
   poc-dta-mcp/                    # Project root (your local directory)
   ├── .devcontainer/
   │   ├── devcontainer.json       # Dev container config
-  │   ├── Dockerfile              # Image definition (context: ..)
-  │   ├── docker-compose.extend.yml  # Dev service
+  │   ├── Dockerfile              # Image definition
+  │   ├── docker-compose.extend.yml  # Dev service (context: .)
   │   └── README.md
   ├── docker-compose.yml          # PostgreSQL service
   ├── pyproject.toml              # Copied during Docker build
+  ├── mcp.json                    # MCP client configuration
   ├── src/                        # Application code
   └── ...
 
 Container:
-  /workspace/                     # Mounted from ../  (project root)
+  /workspace/                     # Mounted from .  (project root)
   ├── .devcontainer/
   ├── docker-compose.yml
   ├── pyproject.toml
+  ├── mcp.json
   ├── src/
   └── ...
 ```
 
 **Key Points:**
-- **Build context**: `..` (parent of `.devcontainer`) = project root
-- **Volume mount**: `..:/workspace` = project root → `/workspace` in container
+- **Build context**: `.` = project root (when VS Code runs docker-compose)
+- **Volume mount**: `.:/workspace` = project root → `/workspace` in container
 - **Working directory**: `/workspace` = where you work in the container
 - This ensures all project files are accessible at `/workspace` inside the container
 
