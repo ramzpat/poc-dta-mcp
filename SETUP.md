@@ -2,6 +2,21 @@
 
 This guide will help you set up and run the MCP (Model Context Protocol) server with PostgreSQL for data analytics.
 
+## Setup Options
+
+### Option 1: Dev Container (Recommended for Consistent Environment)
+
+Use VS Code Dev Containers for zero-configuration setup:
+
+1. Install [VS Code](https://code.visualstudio.com/), [Docker Desktop](https://www.docker.com/products/docker-desktop), and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+2. Open the repository in VS Code: `code /path/to/poc-dta-mcp`
+3. Press `F1` → `Dev Containers: Reopen in Container`
+4. Everything is automatically set up! Run `python demo.py` to verify
+
+See [.devcontainer/README.md](.devcontainer/README.md) for detailed documentation.
+
+### Option 2: Manual Setup
+
 ## Prerequisites
 
 - Python 3.11 or higher

@@ -4,6 +4,36 @@ A Model Context Protocol (MCP) server that enables AI agents to query and analyz
 
 ## 🚀 Quick Start
 
+### Option 1: Using Dev Container (Recommended)
+
+The easiest way to get started with a consistent development environment:
+
+1. **Prerequisites**
+   - [VS Code](https://code.visualstudio.com/)
+   - [Docker Desktop](https://www.docker.com/products/docker-desktop)
+   - [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+2. **Open in VS Code**
+   ```bash
+   code /path/to/poc-dta-mcp
+   ```
+
+3. **Reopen in Container**
+   - Press `F1` or `Cmd/Ctrl+Shift+P`
+   - Select: `Dev Containers: Reopen in Container`
+   - Wait for setup to complete (~2-3 minutes first time)
+
+4. **Run the demo**
+   ```bash
+   python demo.py
+   ```
+
+✨ Everything is pre-configured: Python 3.11, all dependencies, PostgreSQL with sample data, VS Code extensions, and tools!
+
+See [.devcontainer/README.md](.devcontainer/README.md) for more details.
+
+### Option 2: Manual Setup
+
 ### Prerequisites
 - Python 3.11+
 - Docker and Docker Compose
