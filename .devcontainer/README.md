@@ -166,27 +166,45 @@ FROM mcr.microsoft.com/devcontainers/python:3.12-bullseye
 ## Files in This Directory
 
 - `devcontainer.json` - Main configuration file (references docker-compose files)
+  - `workspaceFolder`: `/workspace` - The container path where project is mounted
+  - `service`: `dev` - The Docker Compose service to use
 - `Dockerfile` - Custom development container image (Python 3.11 + dependencies)
 - `docker-compose.extend.yml` - Docker Compose extension for dev service
-  - **Note**: Build context is set to parent directory (`..`) to access `pyproject.toml`
-  - Dockerfile path: `.devcontainer/Dockerfile` (relative to project root)
+  - **Build context**: `..` (parent directory) to access `pyproject.toml`
+  - **Dockerfile path**: `.devcontainer/Dockerfile` (relative to project root)
+  - **Volume mount**: `..:/workspace:cached` - Mounts project root to `/workspace`
+  - **Working directory**: `/workspace` - Where commands run in the container
 - `README.md` - This file
 
 ## Architecture
 
 ```
-poc-dta-mcp/                    # Project root
-├── .devcontainer/
-│   ├── devcontainer.json       # Dev container config
-│   ├── Dockerfile              # Image definition
-│   ├── docker-compose.extend.yml  # Dev service (context: ..)
-│   └── README.md
-├── docker-compose.yml          # PostgreSQL service
-├── pyproject.toml              # Python dependencies (copied in Dockerfile)
-└── src/                        # Application code
+Host Machine:
+  poc-dta-mcp/                    # Project root (your local directory)
+  ├── .devcontainer/
+  │   ├── devcontainer.json       # Dev container config
+  │   ├── Dockerfile              # Image definition (context: ..)
+  │   ├── docker-compose.extend.yml  # Dev service
+  │   └── README.md
+  ├── docker-compose.yml          # PostgreSQL service
+  ├── pyproject.toml              # Copied during Docker build
+  ├── src/                        # Application code
+  └── ...
+
+Container:
+  /workspace/                     # Mounted from ../  (project root)
+  ├── .devcontainer/
+  ├── docker-compose.yml
+  ├── pyproject.toml
+  ├── src/
+  └── ...
 ```
 
-The build context for the dev container is set to the project root (`..` relative to `.devcontainer/`) to ensure access to `pyproject.toml` and other project files.
+**Key Points:**
+- **Build context**: `..` (parent of `.devcontainer`) = project root
+- **Volume mount**: `..:/workspace` = project root → `/workspace` in container
+- **Working directory**: `/workspace` = where you work in the container
+- This ensures all project files are accessible at `/workspace` inside the container
 
 ## Learn More
 
