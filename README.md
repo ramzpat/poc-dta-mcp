@@ -1,4 +1,203 @@
-# POC DTA MCP - Project Summary
+# POC DTA MCP - Data Analytics MCP Server
+
+A Model Context Protocol (MCP) server that enables AI agents to query and analyze data from PostgreSQL databases. This POC demonstrates the basic integration between MCP and PostgreSQL with sample telco analytics data.
+
+## 🚀 Quick Start
+
+### Option 1: Using Dev Container (Recommended)
+
+The easiest way to get started with a consistent development environment:
+
+1. **Prerequisites**
+   - [VS Code](https://code.visualstudio.com/)
+   - [Docker Desktop](https://www.docker.com/products/docker-desktop)
+   - [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+2. **Open in VS Code**
+   ```bash
+   code /path/to/poc-dta-mcp
+   ```
+
+3. **Reopen in Container**
+   - Press `F1` or `Cmd/Ctrl+Shift+P`
+   - Select: `Dev Containers: Reopen in Container`
+   - Wait for setup to complete (~2-3 minutes first time)
+
+4. **Run the demo**
+   ```bash
+   python demo.py
+   ```
+
+✨ Everything is pre-configured: Python 3.11, all dependencies, PostgreSQL with sample data, VS Code extensions, and tools!
+
+See [.devcontainer/README.md](.devcontainer/README.md) for more details.
+
+### Option 2: Manual Setup
+
+### Prerequisites
+- Python 3.11+
+- Docker and Docker Compose
+- Git
+
+### Setup (5 minutes)
+
+1. **Clone and navigate to the repository**
+```bash
+git clone <repository-url>
+cd poc-dta-mcp
+```
+
+2. **Start PostgreSQL**
+```bash
+docker compose up -d
+```
+
+3. **Install Python dependencies**
+```bash
+cp .env.example .env
+pip install psycopg2-binary python-dotenv fastmcp pandas sqlalchemy
+```
+
+4. **Run the demo**
+```bash
+python demo.py
+```
+
+This will verify your setup and show sample data queries.
+
+5. **Start the MCP server**
+```bash
+python src/server.py
+```
+
+## ✅ What's Included
+
+This POC includes:
+
+- ✅ **MCP Server** with FastMCP framework
+- ✅ **PostgreSQL Database** with sample telco data (10 customers, 24+ events, 21+ transactions)
+- ✅ **4 MCP Tools** for database querying and analytics
+- ✅ **Demo Script** showing all capabilities
+- ✅ **Docker Compose** setup for easy deployment
+
+## 📊 Sample Data
+
+The database includes realistic telco analytics data:
+
+- **10 customers** with different account types (Basic, Standard, Premium)
+- **24+ network events** (data usage, call records)
+- **21+ revenue transactions** (subscriptions, overage charges)
+- **Customer summary view** with aggregated metrics
+
+## 🔧 MCP Tools Available
+
+1. **query_database** - Execute SQL queries (SELECT only for safety)
+2. **list_tables** - List all tables with row counts
+3. **describe_table** - Get table schema information
+4. **get_customer_summary** - View customer analytics
+
+## 🧪 Testing with MCP Clients
+
+### Using VS Code with Claude Desktop or Other MCP Clients
+
+The project includes an `mcp.json` configuration file that can be used to test the MCP server with VS Code or other MCP clients.
+
+1. **Start PostgreSQL** (if not already running):
+   ```bash
+   docker compose up -d
+   ```
+
+2. **Configure your MCP client** by adding the server configuration:
+   ```json
+   {
+     "mcpServers": {
+       "data-analytics": {
+         "command": "python",
+         "args": ["src/server.py"],
+         "env": {
+           "POSTGRES_HOST": "localhost",
+           "POSTGRES_PORT": "5432",
+           "POSTGRES_DB": "analytics_db",
+           "POSTGRES_USER": "analytics_user",
+           "POSTGRES_PASSWORD": "analytics_password"
+         }
+       }
+     }
+   }
+   ```
+
+3. **For Claude Desktop**: Copy the configuration above to your Claude Desktop MCP settings file:
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+4. **Test the connection**: Ask Claude to:
+   - "List all tables in the database"
+   - "Show me the first 5 customers"
+   - "What's the total revenue by account type?"
+
+The included `mcp.json` file in the project root contains a ready-to-use configuration.
+
+## 📖 Documentation
+
+- [SETUP.md](SETUP.md) - Detailed setup and usage guide
+- [docs/requirements.md](docs/requirements.md) - Full project requirements
+- [docs/design.md](docs/design.md) - Technical design documentation
+
+## 🎯 Use Cases
+
+This POC demonstrates:
+- Direct PostgreSQL querying through MCP
+- AI agent-driven data analytics
+- Safe SQL query execution
+- Customer analytics and reporting
+
+## 📁 Project Structure
+
+```
+poc-dta-mcp/
+├── src/
+│   ├── server.py          # MCP server implementation
+│   └── database.py        # Database utilities
+├── database/
+│   ├── init.sql          # Database schema
+│   └── sample_data.sql   # Sample data
+├── demo.py              # Demo script
+├── test_server.py       # Server verification
+└── docker-compose.yml   # PostgreSQL setup
+```
+
+## 🔍 Example Queries
+
+```sql
+-- Get all active customers
+SELECT * FROM customers WHERE status = 'active';
+
+-- Revenue by account type
+SELECT account_type, SUM(r.amount) as total_revenue
+FROM customers c
+JOIN revenue r ON c.customer_id = r.customer_id
+GROUP BY account_type;
+
+-- Network quality distribution
+SELECT network_quality, COUNT(*) as event_count
+FROM network_events
+GROUP BY network_quality;
+```
+
+## 🌟 Next Steps
+
+While this POC focuses on basic MCP-PostgreSQL integration (as requested), the complete vision includes:
+- Session-based data access for privacy
+- Advanced analytics tools (churn prediction, ARPU calculation)
+- Redis integration for caching
+- Visualization tools
+- Additional data sources (CSV, PDF)
+
+See the full roadmap in the sections below.
+
+---
+
+# Original Project Summary
 
 ## ✅ Setup Completed
 

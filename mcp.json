@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "data-analytics": {
+      "command": "python",
+      "args": ["src/server.py"],
+      "env": {
+        "POSTGRES_HOST": "localhost",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DB": "analytics_db",
+        "POSTGRES_USER": "analytics_user",
+        "POSTGRES_PASSWORD": "analytics_password"
+      }
+    }
+  }
+}
