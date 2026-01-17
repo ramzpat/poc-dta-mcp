@@ -165,10 +165,28 @@ FROM mcr.microsoft.com/devcontainers/python:3.12-bullseye
 
 ## Files in This Directory
 
-- `devcontainer.json` - Main configuration file
-- `Dockerfile` - Custom development container image
+- `devcontainer.json` - Main configuration file (references docker-compose files)
+- `Dockerfile` - Custom development container image (Python 3.11 + dependencies)
 - `docker-compose.extend.yml` - Docker Compose extension for dev service
+  - **Note**: Build context is set to parent directory (`..`) to access `pyproject.toml`
+  - Dockerfile path: `.devcontainer/Dockerfile` (relative to project root)
 - `README.md` - This file
+
+## Architecture
+
+```
+poc-dta-mcp/                    # Project root
+├── .devcontainer/
+│   ├── devcontainer.json       # Dev container config
+│   ├── Dockerfile              # Image definition
+│   ├── docker-compose.extend.yml  # Dev service (context: ..)
+│   └── README.md
+├── docker-compose.yml          # PostgreSQL service
+├── pyproject.toml              # Python dependencies (copied in Dockerfile)
+└── src/                        # Application code
+```
+
+The build context for the dev container is set to the project root (`..` relative to `.devcontainer/`) to ensure access to `pyproject.toml` and other project files.
 
 ## Learn More
 
